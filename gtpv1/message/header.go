@@ -128,7 +128,9 @@ func (h *Header) UnmarshalBinary(b []byte) error {
 	h.Flags = b[0]
 	h.Type = b[1]
 	h.Length = binary.BigEndian.Uint16(b[2:4])
-
+	if h.Length >= 1492 {
+		return ErrTooShortToParse
+	}
 	h.TEID = binary.BigEndian.Uint32(b[4:8])
 	offset += 4
 
